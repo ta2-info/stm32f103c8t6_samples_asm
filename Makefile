@@ -15,7 +15,10 @@ BASE_FLASH := 0x08000000
 ASM := arm-none-eabi-as
 LD := arm-none-eabi-ld
 OBJCOPY := arm-none-eabi-objcopy
+GDB := arm-none-eabi-gdb
+LLDB := lldb
 ST-FLASH := st-flash
+ST-UTIL := st-util
 OPENOCD := openocd
 
 ASMOPT = -g -mcpu=cortex-m3 -mthumb
@@ -35,6 +38,15 @@ blink.o: blink.s
 install:
 #	$(ST-FLASH) write blink.bin $(BASE_FLASH)
 	$(OPENOCD) -f interface/stlink.cfg -f target/stm32f1x.cfg  -c "program ./blink.bin $(BASE_FLASH) verify reset exit"
+
+debugserver:
+#	$(ST-UTIL) -p 3333 -m
+	$(OPENOCD) -f interface/stlink.cfg -f target/stm32f1x.cfg
+
+
+debug:
+	$(GDB) -x debug.gdb blink.elf
+#	$(LLDB) -s debug.lldb blink.elf
 
 clean:
 	$(RM) blink.bin
