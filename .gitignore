@@ -1,0 +1,9 @@
+# Compiled Object files
+*.o
+
+# Executables
+*.elf
+
+# Image
+*.bin
+
